@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .hello{
+            color:red;
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+    <hello-world>
+        <span slot="username">wanzi</span>
+    </hello-world>
+    <!-- <div class="hello">Hello, Webcomponent</div> -->
+    <template id="hello">
+        <div class="hello">Hello,
+            <slot name="username"></slot>
+        </div>
+    </template>
+</body>
+<script>
+    class HelloWorld extends HTMLElement{
+        constructor(){
+            super();
+            const shadow = this.attachShadow({mode:'open'});
+            const templateDOM = document.getElementById('hello');
+            
+            const cloneTemplate = templateDOM.content.cloneNode(true);
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .hello{
+                    color:red;
+                    font-size:32px;
+                }
+            `
+            shadow.appendChild(style);
+            shadow.appendChild(cloneTemplate);
+        }
+    }
+    customElements.define('hello-world',HelloWorld)
+</script>
+</html>

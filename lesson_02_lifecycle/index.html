@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .newParent{
+            border:1px red solid;
+            margin:20px;
+            height:100px;
+        }
+    </style>
+</head>
+<body>
+    <ol id="consolePanel"></ol>
+    <hello-world message="bilibili"></hello-world>
+    <hr>
+    <button id="removeBtn">remove</button>
+    <button id="moveBtn">move</button>
+    <div id="newParent" class="newParent"></div>
+
+
+    <template id="hello">
+        <div class="hello">Hello, Webcomponent</div>
+        <span id="message"></span>
+    </template>
+
+
+
+    <iframe id="frame" src="../lesson_01_basic/index.html" height="800px" width="800px"></iframe> 
+</body>
+<script>
+    const consolePanel = document.getElementById('consolePanel');
+    const removeBtn = document.getElementById('removeBtn');
+    const moveBtn = document.getElementById('moveBtn');
+    removeBtn.addEventListener('click',()=>{
+        //remove hello-world
+        const hello = document.querySelector('hello-world');
+        hello.parentNode.removeChild(hello);
+    });
+    moveBtn.addEventListener('click',()=>{
+        //remove hello-world
+        const hello = document.querySelector('hello-world');
+        const newParent = document.getElementById('frame');
+        newParent.contentWindow.document.body.appendChild(hello);
+    })
+    function log(message){
+        const li = document.createElement('li');
+        li.innerHTML = message;
+        consolePanel.appendChild(li);
+    }
+    class HelloWorld extends HTMLElement{
+        constructor(){
+            log('HelloWorld 被构造');
+            super();
+            const shadow = this.attachShadow({mode:'open'});
+            const templateDOM = document.getElementById('hello');       
+            const cloneTemplate = templateDOM.content.cloneNode(true);
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .hello{
+                    color:red;
+                    font-size:32px;
+                }
+            `
+            shadow.appendChild(style);
+            shadow.appendChild(cloneTemplate);
+        }
+
+        static get observedAttributes() {
+            return ['message'];
+        }
+
+        attributeChangedCallback(name, oldVal, newVal) {
+            if(name === 'message'){
+                log(name + " 被更新 "+ newVal);
+                const msg = this.shadowRoot.getElementById('message');
+                msg.innerHTML = newVal;
+            }
+        }
+
+        connectedCallback(){
+            log('HelloWorld 被添加到DOM tree');
+        }
+        disconnectedCallback(){
+            log('HelloWorld 从DOM tree上移除');
+        }
+        adoptedCallback(){
+            log('HelloWorld 从DOM tree上被移动');
+        }
+    }
+    customElements.define('hello-world',HelloWorld)
+</script>
+</html>

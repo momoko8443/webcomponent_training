@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root{
+            --text-color: green;
+            --text-size: 48px;
+        }
+        /* hello-world{
+            --text-color: green;
+            --text-size: 48px;
+        } */
+    </style>
+</head>
+<body>
+    <div>
+        <hello-world></hello-world>
+    </div>
+    <template id="hello">
+        <span>Hello,Webcomponent</span>
+        <button>Button in WC</button>
+    </template>
+</body>
+<script>
+    class HelloWorld extends HTMLElement{
+        constructor(){
+            super();
+            const shadow = this.attachShadow({mode:'open'});
+            const templateDOM = document.getElementById('hello');
+            
+            const cloneTemplate = templateDOM.content.cloneNode(true);
+            const style = document.createElement('style');
+            style.innerHTML = `
+                :host{
+                   display:flex;
+                   flex-direction:column; 
+                   width:150px;
+                   color:var(--text-color,red);
+                   font-size:var(--text-size, 18px);
+                }
+
+            `
+            shadow.appendChild(style);
+            shadow.appendChild(cloneTemplate);
+        }
+    }
+    customElements.define('hello-world',HelloWorld)
+</script>
+</html>

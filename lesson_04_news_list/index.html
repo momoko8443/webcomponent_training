@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   
+    <style>
+        
+    </style>
+</head>
+<body>
+    <news-list>
+        <news-item slot="renderItem"></news-item>
+    </news-list>
+
+    <template id="newsItem">
+        <img class="avatar" src="">
+        <div class="flex-vbox h-gap-20">
+            <span class="title"></span>
+            <div class="flex-hbox">
+                <span class="author"></span>
+                <span class="publish-date h-gap-20"></span>
+            </div>
+            <p class="abstract">
+                
+            </p>
+            <div class="flex-hbox">
+                <span class="like">like 9k</span>
+                <span class="comments h-gap-20">comments 2.5k</span>
+                <span class="share h-gap-20">shared 3.1k</span>
+            </div>
+        </div>
+    </template>
+    <template id="newsList">
+        <div class="list-container">
+            <slot name="renderItem" class="v-gap-20"></slot>
+        </div>
+    </template>
+</body>
+<script src="./components/NewsItem.js"></script>
+<script src="./components/NewsList.js"></script>
+<script>
+    const news = [{
+        title:"Biden ended that program",
+        avatar:"https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_400x400.jpg",
+        abstract:"Great honor to have the endorsement of the Governor of Puerto Rico, Wanda Vázquez Garced. As I have always said, Donald J. Trump is the best thing to ever happen to the people of Puerto Rico. The drug manufacturers are now coming back. Biden ended that program!",
+        author:"Donald J. Trump",
+        publishDate:"2020-10-09"
+    },
+    {
+        title:"An American journalist",
+        avatar:"https://pbs.twimg.com/profile_images/1082358814819536896/19QbYCgF_400x400.jpg",
+        abstract:"An American journalist and her mother, who were outspoken against the Assad regime and ISIS, were murdered in their Istanbul home in 2017.But questions about the case linger—who killed Halla & Orouba Barakat? And why?",
+        author:"ABC News",
+        publishDate:"Yesterday"
+    },
+    {
+        title:"Great Firewall",
+        avatar:"https://pbs.twimg.com/profile_images/1194751949821939712/3VBu4_Sa_400x400.jpg",
+        abstract:"Chinese app allows small glimpse beyond 'Great Firewall'",
+        author:"Reuters",
+        publishDate:"7 mins ago"
+    }]
+    const newsList = document.querySelector('news-list');
+    newsList.setAttribute('newslist',JSON.stringify(news));
+</script>
+</html>
